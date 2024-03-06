@@ -21,6 +21,7 @@ import InsideAboutUs from '../pages/AboutUs/InsideAboutUs.jsx';
 import AllTopModelsIndise from '../pages/AllTopmodels/AllTopModelsIndise.jsx';
 import AllFreeModelsInside from '../pages/AllFreeModels/AllFreeModelsInside.jsx';
 import OwnedCharacter from '../pages/Home/OwnedCharacter.jsx';
+import CharacterChat from '../pages/CharacterDetails/CharacterChat.jsx';
 
 const Home = React.lazy(() => import('../pages/Home/home.jsx'));
 const CreateCharacter = React.lazy(() =>
@@ -176,6 +177,15 @@ const allRoutes = [
     element: <InsideLayout />,
     children: [
       { index: true, element: <CharacterDetails /> },
+      // { path: 'character-details', element: <CharacterDetails /> },
+    ],
+  },
+
+  {
+    path: '/character-chat',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <CharacterChat /> },
       // { path: 'character-details', element: <CharacterDetails /> },
     ],
   },

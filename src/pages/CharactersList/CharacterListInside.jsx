@@ -44,7 +44,7 @@ const CharactersListInside = ({
               key={free.id}
               className="listing_box p-2 bg-[#242435] relative rounded-lg"
             >
-              <Link to="/character-details" state={{ id: free.id }}>
+              <Link to="/character-chat" state={{ id: free.id }}>
                 <img
                   src={free.character_photo}
                   className="w-full h-[184px] overflow-hidden rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"

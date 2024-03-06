@@ -53,7 +53,7 @@ const TopCollectionInside = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-4">
         {paidChars?.length && Array.isArray(paidChars) ? (
-          paidChars?.map((paidCharac) => (
+          paidChars?.slice(0, 5)?.map((paidCharac) => (
             <div
               key={paidCharac.id}
               className="listing_box p-2 bg-[#242435] relative rounded-lg"

@@ -43,12 +43,12 @@ const OwnedCharacter = () => {
         <h2 className="text-white text-xl md:text-3xl font-semibold">
           Owned Characters
         </h2>
-        <Link
+        {/* <Link
           to="/all-top-models-inside"
           className="text-[#a1a1a1] hover:text-[#00a3ff] uppercase font-normal text-[13px] md:text-[15px] flex items-center"
         >
           VIEW ALL <AiOutlineArrowRight />
-        </Link>
+        </Link> */}
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-4">
@@ -58,7 +58,7 @@ const OwnedCharacter = () => {
               key={buyCharac.id}
               className="listing_box p-2 bg-[#242435] relative rounded-lg"
             >
-              <Link to="/character-details" state={{ id: buyCharac.id }}>
+              <Link to="/character-chat" state={{ id: buyCharac.id }}>
                 <img
                   src={buyCharac.character_photo}
                   className="w-full h-[184px] overflow-hidden rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
