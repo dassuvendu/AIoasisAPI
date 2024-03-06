@@ -18,6 +18,9 @@ import Faq from '../pages/FAQ/Faq.jsx';
 import AllTopModels from '../pages/AllTopmodels/AllTopModels.jsx';
 import AllFreeModels from '../pages/AllFreeModels/AllFreeModels.jsx';
 import InsideAboutUs from '../pages/AboutUs/InsideAboutUs.jsx';
+import AllTopModelsIndise from '../pages/AllTopmodels/AllTopModelsIndise.jsx';
+import AllFreeModelsInside from '../pages/AllFreeModels/AllFreeModelsInside.jsx';
+import OwnedCharacter from '../pages/Home/OwnedCharacter.jsx';
 
 const Home = React.lazy(() => import('../pages/Home/home.jsx'));
 const CreateCharacter = React.lazy(() =>
@@ -122,11 +125,35 @@ const allRoutes = [
     ],
   },
   {
+    path: '/all-top-models-inside',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <AllTopModelsIndise /> },
+      { path: '/all-top-models-inside', element: <AllTopModelsIndise /> },
+    ],
+  },
+  {
+    path: '/owned-character',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <OwnedCharacter /> },
+      { path: '/owned-character', element: <OwnedCharacter /> },
+    ],
+  },
+  {
     path: '/all-free-models',
     element: <OutsideLayout />,
     children: [
       { index: true, element: <AllFreeModels /> },
       { path: '/all-free-models', element: <AllFreeModels /> },
+    ],
+  },
+  {
+    path: '/all-free-models-inside',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <AllFreeModelsInside /> },
+      { path: '/all-free-models-inside', element: <AllFreeModelsInside /> },
     ],
   },
   {

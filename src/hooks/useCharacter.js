@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchCharactersList,
   fetchCharactersListAfterLogin,
+  getFreeCharacters,
   getTagsList,
   searchCharacter,
   searchCharacterAfterLogin,
@@ -22,13 +23,13 @@ const useTagsList = () => {
     tagsList.forEach((item) => {
       item.secondary_tag === 0
         ? primaryTags.push({
-            value: item.id,
-            label: item.name,
-          })
+          value: item.id,
+          label: item.name,
+        })
         : secondaryTags.push({
-            value: item.id,
-            label: item.name,
-          });
+          value: item.id,
+          label: item.name,
+        });
     });
   }
 
@@ -95,7 +96,8 @@ const useCharactersAfterLogin = (pageSection) => {
     } else if (pageSection.sortTag !== '') {
       dispatch(sortCharacterAfterLogin(pageSection));
     } else {
-      dispatch(fetchCharactersListAfterLogin(pageSection));
+      // dispatch(fetchCharactersListAfterLogin(pageSection));
+      dispatch(getFreeCharacters(pageSection))
     }
   }, [pageSection, dispatch]);
 

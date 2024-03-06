@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AiOutlineArrowRight, TiHeart } from "../../assets/icons";
-import { popularity } from "../../reducers/CharacterSlice";
+
 import { useState } from "react";
 import Pagination from "../../utils/Pagination";
 import { RoseCriptoIcon } from "../../assets/images/images";
 import { useCharacters } from "../../hooks/useCharacter";
 
-const AllFreeModels = () => {
+const AllFreeModelsInside = () => {
   const [pageSection, setPageSection] = useState({
     page: 1,
-    limit: 10,
+    limit: 3,
     tag: "",
     entity: "",
     gender: "",
@@ -20,7 +20,7 @@ const AllFreeModels = () => {
   const { isLoading, error, message } = useSelector((state) => state.character);
 
   const { characters, totalPages } = useCharacters(pageSection);
-
+  console.log("characters: ", characters);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -28,10 +28,6 @@ const AllFreeModels = () => {
   if (error) {
     return <div>Error: {message}</div>;
   }
-
-  const handlePopularity = (charId) => {
-    dispatch(popularity(charId));
-  };
 
   return (
     <div className="mt-10">
@@ -88,12 +84,15 @@ const AllFreeModels = () => {
           </div>
         )}
       </div>
-      {characters?.length > 10 && Array.isArray(characters) ? (
-        <Pagination
-          totalPages={totalPages}
-          pageSection={pageSection}
-          setPageSection={setPageSection}
-        />
+      {characters?.length > 3 && Array.isArray(characters) ? (
+        <>
+          {console.log("Hello")}
+          <Pagination
+            totalPages={totalPages}
+            pageSection={pageSection}
+            setPageSection={setPageSection}
+          />
+        </>
       ) : (
         ""
       )}
@@ -101,4 +100,4 @@ const AllFreeModels = () => {
   );
 };
 
-export default AllFreeModels;
+export default AllFreeModelsInside;

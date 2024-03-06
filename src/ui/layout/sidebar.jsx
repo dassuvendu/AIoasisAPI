@@ -44,6 +44,14 @@ const Sidebar = () => {
           <li className="mb-0 md:mb-3 text-center ml-2">
             <Link
               className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
+              to="/owned-character"
+            >
+              Owned Character
+            </Link>
+          </li>
+          <li className="mb-0 md:mb-3 text-center ml-2">
+            <Link
+              className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
               to="/profile"
             >
               My Profile

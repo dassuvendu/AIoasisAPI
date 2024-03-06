@@ -162,6 +162,7 @@ export const fetchCharactersListByUser = createAsyncThunk(
   'characters/fetchCharactersListByUser',
   async (_, { rejectWithValue }) => {
     try {
+      console.log("hello");
       const response = await api.get('/user/characters-by-users');
       if (response?.data?.status_code === 200) {
         return response.data.data;
@@ -257,7 +258,7 @@ export const searchCharacterAfterLogin = createAsyncThunk(
   'character/character-search-after-login',
   async (searchInput, { rejectWithValue }) => {
     try {
-      const { tag, entity, gender,page } = searchInput;
+      const { tag, entity, gender, page } = searchInput;
       const response = await api.post(`user/character-search-user/?page=${page}`, {
         tag,
         entity, //search
@@ -280,14 +281,14 @@ export const sortCharacter = createAsyncThunk(
   'character/character-sort',
   async (searchInput, { rejectWithValue }) => {
     try {
-      const { tag, entity, gender,page,sortTag } = searchInput;
+      const { tag, entity, gender, page, sortTag } = searchInput;
       const response = await api.post(
         `user/character-search-by-trending/?page=${page}`,
         {
           entity: sortTag,
         }
       );
-      console.log(response,"response");
+      console.log(response, "response");
       if (response?.data?.status_code === 200) {
         return response.data;
       } else {
@@ -304,14 +305,14 @@ export const sortCharacterAfterLogin = createAsyncThunk(
   'character/character-sort-user',
   async (searchInput, { rejectWithValue }) => {
     try {
-      const { tag, entity, gender,page,sortTag } = searchInput;
+      const { tag, entity, gender, page, sortTag } = searchInput;
       const response = await api.post(
         `user/character-search-by-trending-user/?page=${page}`,
         {
           entity: sortTag,
         }
       );
-      console.log(response,"response");
+      console.log(response, "response");
       if (response?.data?.status_code === 200) {
         return response.data;
       } else {
@@ -385,7 +386,95 @@ export const popularity = createAsyncThunk(
     }
   }
 );
+// //get paid characters after login
+export const getPaidCharacters = createAsyncThunk(
+  'character/paidCharacters',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user/user-paid-characters/`);
+      console.log("res:", response?.data?.data);
+      if (response?.data?.status_code === 200) {
+        return response?.data?.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err) {
+      let errors = errorHandler(err);
+      return rejectWithValue(errors);
+    }
+  }
+);
+//get free character after login
+export const getFreeCharacters = createAsyncThunk(
+  'character/freeCharacters',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user/user-characters/`);
+      console.log("free:", response?.data?.data);
+      if (response?.data?.status_code === 200) {
+        return response?.data?.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err) {
+      let errors = errorHandler(err);
+      return rejectWithValue(errors);
+    }
+  }
+);
+//owned Characters
+export const getBuyCharacters = createAsyncThunk(
+  'character/buyCharacters',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user/paid-character-buy-list/`);
+      console.log("free:", response?.data?.data);
+      if (response?.data?.status_code === 200) {
+        return response?.data?.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err) {
+      let errors = errorHandler(err);
+      return rejectWithValue(errors);
+    }
+  }
+)
+export const purchaseCharacter = createAsyncThunk(
+  'character/Characters',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/user/buy-character`, id);
 
+      if (response?.data?.status_code === 201) {
+        return response?.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err) {
+      let errors = errorHandler(err);
+      return rejectWithValue(errors);
+    }
+  }
+)
+export const transferCharacter = createAsyncThunk(
+  'character/TransferCharacters',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/user/transfer-character`, data);
+
+      if (response?.data?.status_code === 200) {
+        return response?.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err) {
+      let errors = errorHandler(err);
+      return rejectWithValue(errors);
+    }
+  }
+
+)
 const initialState = {
   message: null,
   error: null,
@@ -394,9 +483,9 @@ const initialState = {
   totalPage: null,
   totalCharacters: null,
   perPage: null,
-  
-  paidCharacterList:[],
-  paidUserCharacterList:[],
+
+  paidCharacterList: [],
+  paidUserCharacterList: [],
 
   userCharacterList: [],
   response: null,
@@ -407,6 +496,11 @@ const initialState = {
   tags: [],
   selectedTags: [],
   isPaymentRequired: null,
+  paidChars: [],
+  freeChars: [],
+  buyCharacter: [],
+  purchase: [],
+  transfer: []
 };
 
 const characterSlice = createSlice({
@@ -471,7 +565,7 @@ const characterSlice = createSlice({
       .addCase(fetchCharactersList.fulfilled, (state, { payload }) => {
         const { data, per_page, total_characters, total_page } = payload;
         state.characterList = data;
-        state.totalPage = total_page;
+        state.totalPage = Math.ceil(total_page);
         state.totalCharacters = total_characters;
         state.perPage = per_page;
         state.isLoading = false;
@@ -784,7 +878,83 @@ const characterSlice = createSlice({
           payload !== undefined && payload.message
             ? payload.message
             : 'Something went wrong. Try again later.';
-      });
+      }).addCase(getPaidCharacters.pending, (state) => {
+        state.isLoading = true;
+        state.error = false;
+      }).addCase(getPaidCharacters.fulfilled, (state, action) => {
+
+        state.isLoading = false;
+        console.log("payload", action.payload);
+        state.paidChars = action.payload;
+        state.error = false;
+      }).addCase(getPaidCharacters.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = true;
+        state.message =
+          payload !== undefined && payload.message
+            ? payload.message
+            : 'Something went wrong. Try again later.';
+      }).addCase(getFreeCharacters.pending, (state) => {
+        state.isLoading = true;
+        state.error = false;
+      }).addCase(getFreeCharacters.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log("freepayload: ", action.payload);
+        state.freeChars = action.payload;
+        state.error = false;
+      }).addCase(getFreeCharacters.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = true;
+        state.message =
+          payload !== undefined && payload.message
+            ? payload.message
+            : 'Something went wrong. Try again later.';
+      }).addCase(getBuyCharacters.pending, (state) => {
+        state.isLoading = true;
+        state.error = false
+      }).addCase(getBuyCharacters.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log("freepayload: ", payload);
+        state.buyCharacter = payload;
+        state.error = false;
+      }).addCase(getBuyCharacters.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = true;
+        state.message =
+          payload !== undefined && payload.message
+            ? payload.message
+            : 'Something went wrong. Try again later.';
+      }).addCase(purchaseCharacter.pending, (state) => {
+        state.isLoading = true;
+        state.error = false
+      }).addCase(purchaseCharacter.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.purchase = payload?.message
+        console.log("created: ", payload.message);
+        state.error = false
+      }).addCase(purchaseCharacter.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = true;
+        state.message =
+          payload !== undefined && payload.message
+            ? payload.message
+            : 'Something went wrong. Try again later.';
+      }).addCase(transferCharacter.pending, (state) => {
+        state.isLoading = true;
+        state.error = false
+      }).addCase(transferCharacter.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.purchase = payload
+        console.log("buy: ", payload);
+        state.error = false
+      }).addCase(transferCharacter.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = true;
+        state.message =
+          payload !== undefined && payload.message
+            ? payload.message
+            : 'Something went wrong. Try again later.';
+      })
   },
 });
 export const { clearFormData, setSelectedTagsList } = characterSlice.actions;

@@ -6,14 +6,16 @@ import MyProfileSlice from '../reducers/MyProfileSlice';
 import PaymentSlice from '../reducers/PaymentSlice';
 import ContactSlice from '../reducers/ContactSlice';
 
+
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
     character: CharacterSlice,
+    // characterInside: CharacterSliceInside,
     plans: PlanSlice,
     profile: MyProfileSlice,
     payment: PaymentSlice,
-    contact:ContactSlice
+    contact: ContactSlice,
   },
   devTools: import.meta.env.DEV,
 });

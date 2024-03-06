@@ -19,6 +19,7 @@ import { convertToReadableFormat } from "../../utils/DateFormatter";
 import { userFace } from "../../assets/images/images";
 import PageLoader from "../../ui/layout/loader/PageLoader";
 import PaymentFirst from "../../auth/PaymentFirst";
+import PaymentChat from "../../auth/PaymentChat";
 
 const CharacterDetails = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const CharacterDetails = () => {
   const { characterDetails, isLoading } = useSelector(
     (state) => state.character
   );
-
+  console.log("extra field: ", characterDetails?.details?.extraField);
   const [charDetails, setCharDetails] = useState();
 
   const id = location.state.id;
@@ -48,6 +49,7 @@ const CharacterDetails = () => {
 
   //
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [openChatPaymentModel, setOpenChatPaymentModel] = useState(false);
   return (
     <div className="create_character_wrap px-3 md:px-0 ml-0 md:ml-4">
       {/* CharacterDetails section start here */}
@@ -100,17 +102,24 @@ const CharacterDetails = () => {
                     ))}
                 </div>
 
-                <Link
-                  to="/chat"
+                <button
+                  // to="/chat"
+                  onClick={() => {
+                    setOpenChatPaymentModel(true);
+                    // setOpenChatPaymentModel(id);
+                  }}
                   state={{ id: id, charDetails: charDetails?.details }}
                   className="flex justify-center items-center create_character_btn w-full mb-2 text-sm text-white uppercase rounded-full h-11 "
                 >
                   <AiFillWechat className="text-xl mr-2" />
-                  Chat with {charDetails?.name}
+                  Buy {charDetails?.name} for Chat
                   <FcLock className="text-xl ml-2" />
-                </Link>
+                </button>
                 <button
-                  onClick={() => setOpenPaymentModal(true)}
+                  onClick={() => {
+                    setOpenPaymentModal(true);
+                    // setOpenPaymentModal(characterDetails?.details?.extraField);
+                  }}
                   className="flex justify-center items-center create_character_btn2 w-full mb-0 text-sm text-white uppercase rounded-full h-11 "
                 >
                   <PiContactlessPaymentFill className="text-xl mr-2" />
@@ -176,8 +185,15 @@ const CharacterDetails = () => {
       <PaymentFirst
         openPaymentModal={openPaymentModal}
         setOpenPaymentModal={setOpenPaymentModal}
+        extraField={characterDetails?.details?.extraField}
+        id={id}
       />
       {/* PaymentFirst Modal Ends */}
+      <PaymentChat
+        openChatPaymentModel={openChatPaymentModel}
+        setOpenChatPaymentModel={setOpenChatPaymentModel}
+        id={id}
+      />
     </div>
   );
 };

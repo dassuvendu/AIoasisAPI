@@ -1,12 +1,18 @@
 import React, { useRef, useEffect, useState, Suspense } from "react";
 import { Select } from "flowbite-react";
-import { AiOutlineSearch } from "../../assets/icons";
+import { AiOutlineArrowRight, AiOutlineSearch } from "../../assets/icons";
 import CharactersList from "../charactersList/charactersList";
 import { useSelector } from "react-redux";
 import debounce from "../../utils/useDebouncedSearch";
 import { useCharactersAfterLogin } from "../../hooks/useCharacter";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Sidebar from "../../ui/layout/sidebar";
+import HomeBanner from "./HomeBanner";
+import TopCollection from "./TopCollection";
+import TopCollectionInside from "./TopCollectionInside";
+import CharactersListInside from "../CharactersList/CharacterListInside";
+// import TopCollectionInside from "./TopCollectionInside";
+// import CharacterListInside from "./CharacterListInside";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -72,6 +78,8 @@ const Dashboard = () => {
 
   return (
     <div className="px-2">
+      <HomeBanner />
+      {/* <TopCollection /> */}
       <div className="mb-8 flex justify-between">
         <div className="search_area w-1/2">
           <div className="relative">
@@ -106,9 +114,21 @@ const Dashboard = () => {
           {/* <h2 className="text-white text-3xl font-semibold">Explore Product</h2> */}
           <div>
             <Sidebar />
+            <TopCollectionInside />
           </div>
         </div>
-        <CharactersList
+        <div className="flex justify-between mb-8">
+          <h2 className="text-white text-xl md:text-3xl font-semibold">
+            Explore Free Models
+          </h2>
+          <Link
+            to="/all-free-models-inside"
+            className="text-[#a1a1a1] hover:text-[#00a3ff] uppercase font-normal text-[13px] md:text-[15px] flex items-center"
+          >
+            VIEW ALL <AiOutlineArrowRight />
+          </Link>
+        </div>
+        <CharactersListInside
           characters={characters}
           totalPages={totalPages}
           pageSection={pageSection}

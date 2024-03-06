@@ -61,7 +61,8 @@ const CreateCharacter = () => {
     formData.append("name", data.name);
     formData.append("character_photo", data.character_photo[0]);
     formData.append("introduction", data.introduction);
-    formData.append("visibility", data.visibility);
+    formData.append("visibility", 0);
+    formData.append("extra_field", 0);
     // formData.append('tags', data.tags.map((x) => x.toString()).toString());
     formData.append(
       "tags",
@@ -328,9 +329,9 @@ const CreateCharacter = () => {
                   id="paid_url"
                   placeholder="Input your wallet address (Oasis network)"
                   rows={3}
-                  // {...register("payment-wallet-url", {
-                  //   required: "Payment Wallet Url is required",
-                  // })}
+                  {...register("payment-wallet-url", {
+                    required: "Payment Wallet Url is required",
+                  })}
                 />
                 {errors?.greeting?.message && (
                   <h6 className="text-red-500">{errors.greeting.message}</h6>

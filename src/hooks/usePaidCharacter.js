@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchPaidCharactersList,
   fetchTopCharactersListAfterLogin,
+  getBuyCharacters,
+  getPaidCharacters,
   getTagsList,
   searchCharacter,
   searchCharacterAfterLogin,
   sortCharacter,
   sortCharacterAfterLogin,
-  
+
 } from '../reducers/CharacterSlice';
 
 // Fetching All Tags
@@ -23,13 +25,13 @@ const useTagsList = () => {
     tagsList.forEach((item) => {
       item.secondary_tag === 0
         ? primaryTags.push({
-            value: item.id,
-            label: item.name,
-          })
+          value: item.id,
+          label: item.name,
+        })
         : secondaryTags.push({
-            value: item.id,
-            label: item.name,
-          });
+          value: item.id,
+          label: item.name,
+        });
     });
   }
 
@@ -95,8 +97,24 @@ const useTopCharactersAfterLogin = (pageSection) => {
       dispatch(searchCharacterAfterLogin(pageSection));
     } else if (pageSection.sortTag !== '') {
       dispatch(sortCharacterAfterLogin(pageSection));
-    } else {
-      dispatch(fetchTopCharactersListAfterLogin(pageSection));
+    }
+    else {
+      dispatch(getBuyCharacters(pageSection));
+    }
+  }, [pageSection, dispatch]);
+
+  useEffect(() => {
+    if (
+      pageSection.entity !== '' ||
+      pageSection.gender !== '' ||
+      pageSection.tag !== ''
+    ) {
+      dispatch(searchCharacterAfterLogin(pageSection));
+    } else if (pageSection.sortTag !== '') {
+      dispatch(sortCharacterAfterLogin(pageSection));
+    }
+    else {
+      dispatch(getPaidCharacters(pageSection));
     }
   }, [pageSection, dispatch]);
 
