@@ -34,7 +34,7 @@ const CharactersList = ({
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-4">
         {characters?.length && Array.isArray(characters) ? (
-          characters?.map((character) => (
+          characters?.slice(0, 5)?.map((character) => (
             <div
               key={character.id}
               className="listing_box p-2 bg-[#242435] relative rounded-lg"
@@ -80,7 +80,7 @@ const CharactersList = ({
           </div>
         )}
       </div>
-      {characters?.length > 10 && Array.isArray(characters) ? (
+      {/* {characters?.length > 10 && Array.isArray(characters) ? (
         <Pagination
           totalPages={totalPages}
           pageSection={pageSection}
@@ -88,7 +88,7 @@ const CharactersList = ({
         />
       ) : (
         ""
-      )}
+      )} */}
     </>
   );
 };

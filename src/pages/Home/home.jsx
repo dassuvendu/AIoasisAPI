@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, Suspense } from "react";
-import { Select } from "flowbite-react";
+import { Button, Select } from "flowbite-react";
 import { AiOutlineArrowRight, AiOutlineSearch } from "../../assets/icons";
-import CharactersList from "../charactersList/charactersList";
+import CharactersList from "../CharactersList/CharactersList";
 import { useSelector } from "react-redux";
 import debounce from "../../utils/useDebouncedSearch";
 import { useCharacters } from "../../hooks/useCharacter";
@@ -84,7 +84,6 @@ const Home = () => {
   if (token) {
     return <Navigate to="/dashboard" />;
   }
-
   return (
     <div className="px-2">
       <HomeBanner />
@@ -94,12 +93,19 @@ const Home = () => {
           <h2 className="text-white text-xl md:text-3xl font-semibold">
             Explore Free Models
           </h2>
-          <Link
+          {/* <Link
             to="/all-free-models"
             className="text-[#a1a1a1] hover:text-[#00a3ff] uppercase font-normal text-[13px] md:text-[15px] flex items-center"
           >
             VIEW ALL <AiOutlineArrowRight />
-          </Link>
+          </Link> */}
+
+          <Button
+            // to="/all-free-models"
+            className="text-[#a1a1a1] hover:text-[#00a3ff] uppercase font-normal text-[13px] md:text-[15px] flex items-center bg-transparent"
+          >
+            VIEW ALL <AiOutlineArrowRight />
+          </Button>
         </div>
         <CharactersList
           characters={characters}

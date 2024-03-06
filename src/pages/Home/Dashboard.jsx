@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, Suspense } from "react";
 import { Select } from "flowbite-react";
 import { AiOutlineArrowRight, AiOutlineSearch } from "../../assets/icons";
-import CharactersList from "../charactersList/charactersList";
+import CharactersList from "../CharactersList/CharactersList";
 import { useSelector } from "react-redux";
 import debounce from "../../utils/useDebouncedSearch";
 import { useCharactersAfterLogin } from "../../hooks/useCharacter";
