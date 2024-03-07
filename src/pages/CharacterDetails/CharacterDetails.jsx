@@ -29,6 +29,9 @@ const CharacterDetails = () => {
     (state) => state.character
   );
   console.log("extra field: ", characterDetails?.details?.extraField);
+  console.log("Character Details: ", characterDetails?.details?.user_id);
+  const { error, message, profile } = useSelector((state) => state.profile);
+  console.log("user Character: ", profile?.details);
   const [charDetails, setCharDetails] = useState();
 
   const id = location.state.id;
@@ -101,8 +104,40 @@ const CharacterDetails = () => {
                       </div>
                     ))}
                 </div>
-
-                <button
+                {characterDetails?.details?.user_id === profile?.details?.id ? (
+                  <>
+                    <button className="flex justify-center items-center create_character_btn w-full mb-2 text-sm text-white uppercase rounded-full h-11 ">
+                      You Already Owned the Character
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      // to="/chat"
+                      onClick={() => {
+                        setOpenChatPaymentModel(true);
+                        // setOpenChatPaymentModel(id);
+                      }}
+                      state={{ id: id, charDetails: charDetails?.details }}
+                      className="flex justify-center items-center create_character_btn w-full mb-2 text-sm text-white uppercase rounded-full h-11 "
+                    >
+                      <AiFillWechat className="text-xl mr-2" />
+                      Buy {charDetails?.name} for Chat
+                      <FcLock className="text-xl ml-2" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setOpenPaymentModal(true);
+                        // setOpenPaymentModal(characterDetails?.details?.extraField);
+                      }}
+                      className="flex justify-center items-center create_character_btn2 w-full mb-0 text-sm text-white uppercase rounded-full h-11 "
+                    >
+                      <PiContactlessPaymentFill className="text-xl mr-2" />
+                      Purchase this character
+                    </button>
+                  </>
+                )}
+                {/* <button
                   // to="/chat"
                   onClick={() => {
                     setOpenChatPaymentModel(true);
@@ -124,7 +159,7 @@ const CharacterDetails = () => {
                 >
                   <PiContactlessPaymentFill className="text-xl mr-2" />
                   Purchase this character
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="px-4">
@@ -187,7 +222,14 @@ const CharacterDetails = () => {
         setOpenPaymentModal={setOpenPaymentModal}
         extraField={characterDetails?.details?.extraField}
         id={id}
-      />
+      />{" "}
+      *
+      {/* <PaymentFirstDemo
+        openPaymentModal={openPaymentModal}
+        setOpenPaymentModal={setOpenPaymentModal}
+        extraField={characterDetails?.details?.extraField}
+        id={id}
+      /> */}
       {/* PaymentFirst Modal Ends */}
       <PaymentChat
         openChatPaymentModel={openChatPaymentModel}

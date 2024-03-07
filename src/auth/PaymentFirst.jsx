@@ -59,7 +59,7 @@ const PaymentFirst = ({
       if (response?.payload?.status_code === 200) {
         navigate("/owned-character");
       } else {
-        navigate("/owned-character");
+        navigate("/character-details");
       }
     });
   };
