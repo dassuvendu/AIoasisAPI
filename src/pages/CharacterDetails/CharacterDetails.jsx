@@ -29,7 +29,7 @@ const CharacterDetails = () => {
     (state) => state.character
   );
   console.log("extra field: ", characterDetails?.details?.extraField);
-  console.log("Character Details: ", characterDetails?.details?.user_id);
+  console.log("Character Details: ", characterDetails?.details);
   const { error, message, profile } = useSelector((state) => state.profile);
   console.log("user Character: ", profile?.details);
   const [charDetails, setCharDetails] = useState();
