@@ -6,10 +6,10 @@ import { getBuyCharacters, popularity } from "../../reducers/CharacterSlice";
 import Pagination from "../../utils/Pagination";
 import { RoseCriptoIcon } from "../../assets/images/images";
 import { useTopCharacters } from "../../hooks/usePaidCharacter";
-const OwnedCharacter = () => {
+const BuyCharacter = () => {
   const [pageSection, setPageSection] = useState({
     page: 1,
-    limit: 3,
+    limit: 16,
     tag: "",
     entity: "",
     gender: "",
@@ -19,12 +19,17 @@ const OwnedCharacter = () => {
   const { isLoading, error, message, buyCharacter } = useSelector(
     (state) => state.character
   );
-  console.log("buyChars: ", buyCharacter);
+  const { profile } = useSelector((state) => state.profile);
+  //   console.log("buyCharschat: ", buyCharacter);
   // useEffect(() => {
   //   dispatch(getBuyCharacters());
   // }, [dispatch]);
-  const { paidCharacters, totalPages } = useTopCharacters(pageSection);
 
+  const { paidCharacters, totalPages } = useTopCharacters(pageSection);
+  console.log("Buy Chars chat: ", paidCharacters);
+  const filteredPaidCharacters = paidCharacters.filter(
+    (buyCharac) => buyCharac?.user_id === profile?.details?.id
+  );
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -41,7 +46,7 @@ const OwnedCharacter = () => {
     <div className="top_collection_section mt-6 mb-16">
       <div className="flex justify-between mb-8">
         <h2 className="text-white text-xl md:text-3xl font-semibold">
-          Owned Characters
+          Buy For Chat Characters
         </h2>
         {/* <Link
           to="/all-top-models-inside"
@@ -50,47 +55,11 @@ const OwnedCharacter = () => {
           VIEW ALL <AiOutlineArrowRight />
         </Link> */}
       </div>
-      <div className="sidebar_area px-3 md:px-0">
-        <ul className="flex">
-          <li className="mb-0 md:mb-3 text-center ml-2">
-            <Link
-              className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
-              to="/buy-character"
-            >
-              Buy Character
-            </Link>
-          </li>
 
-          {/* <li className="mb-0 md:mb-3 text-center ml-2">
-            <Link
-              className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
-              to="/pricing"
-            >
-              Pricing
-            </Link>
-          </li> */}
-          {/* <li className="mb-0 md:mb-3 text-center ml-2">
-            <Link
-              className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
-              to="/subscription-history"
-            >
-              Subscription History
-            </Link>
-          </li> */}
-
-          <li className="mb-0 md:mb-3 text-center ml-2">
-            <Link
-              className="text-[12px] font-normal border border-[#282831] text-[#acacac] bg-transparent hover:text-[#00a2fe] hover:bg-[#212e48] text-center py-2.5 px-4 rounded-full"
-              to="/buy-for-chat"
-            >
-              Buy For Chat
-            </Link>
-          </li>
-        </ul>
-      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-4">
-        {paidCharacters?.length && Array.isArray(paidCharacters) ? (
-          paidCharacters?.map((buyCharac) => (
+        {filteredPaidCharacters?.length &&
+        Array.isArray(filteredPaidCharacters) ? (
+          filteredPaidCharacters?.map((buyCharac) => (
             <div
               key={buyCharac.id}
               className="listing_box p-2 bg-[#242435] relative rounded-lg"
@@ -159,4 +128,4 @@ const OwnedCharacter = () => {
   );
 };
 
-export default OwnedCharacter;
+export default BuyCharacter;

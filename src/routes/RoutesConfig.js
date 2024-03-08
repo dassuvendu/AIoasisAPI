@@ -22,6 +22,8 @@ import AllTopModelsIndise from '../pages/AllTopmodels/AllTopModelsIndise.jsx';
 import AllFreeModelsInside from '../pages/AllFreeModels/AllFreeModelsInside.jsx';
 import OwnedCharacter from '../pages/Home/OwnedCharacter.jsx';
 import CharacterChat from '../pages/CharacterDetails/CharacterChat.jsx';
+import BuyForChat from '../pages/Home/BuyForChat.jsx';
+import BuyCharacter from '../pages/Home/BuyCharacter.jsx';
 
 const Home = React.lazy(() => import('../pages/Home/home.jsx'));
 const CreateCharacter = React.lazy(() =>
@@ -139,6 +141,22 @@ const allRoutes = [
     children: [
       { index: true, element: <OwnedCharacter /> },
       { path: '/owned-character', element: <OwnedCharacter /> },
+    ],
+  },
+  {
+    path: '/buy-for-chat',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <BuyForChat /> },
+      { path: '/buy-for-chat', element: <BuyForChat /> },
+    ],
+  },
+  {
+    path: '/buy-character',
+    element: <InsideLayout />,
+    children: [
+      { index: true, element: <BuyCharacter /> },
+      { path: '/buy-character', element: <BuyCharacter /> },
     ],
   },
   {

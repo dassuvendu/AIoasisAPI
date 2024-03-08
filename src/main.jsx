@@ -12,20 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     clientId={import.meta.env.VITE_SOCIAL_AUTH_GOOGLE_CLINT_ID}
   >
     <React.StrictMode>
-      <MetaMaskProvider
-        debug={false}
-        sdkOptions={{
-          dappMetadata: {
-            name: "Example React Dapp",
-            url: window.location.href,
-          },
-          // Other options
-        }}
-      >
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </MetaMaskProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   </GoogleOAuthProvider>
 );
