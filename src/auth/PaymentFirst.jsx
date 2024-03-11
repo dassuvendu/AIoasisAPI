@@ -5,13 +5,36 @@ import { MetaMaskIcon } from "../assets/images/images";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ethers } from "ethers";
-
+import ErrorMessage from "./ErrorMessage";
 import {
   getCharacterById,
   transferCharacter,
 } from "../reducers/CharacterSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSDK } from "@metamask/sdk-react";
+
+const startPayment = async ({ setError, setTxs, ether, addr }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
+
+    await window.ethereum.send("eth_requestAccounts");
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    ethers.utils.getAddress(addr);
+    const tx = await signer.sendTransaction({
+      to: addr,
+      value: ethers.utils.parseEther(ether),
+    });
+    console.log({ ether, addr });
+    console.log("tx", tx);
+    setTxs([tx]);
+    return true;
+  } catch (err) {
+    setError(err.message);
+    return false;
+  }
+};
 
 const PaymentFirst = ({
   openPaymentModal,
@@ -168,34 +191,6 @@ const PaymentFirst = ({
   //   }
   // };
   console.log("type: ", typeof window.ethereum);
-  const startPayment = async ({ setError, setTxs, ether, addr }) => {
-    try {
-      if (!window.ethereum)
-        throw new Error("No crypto wallet found. Please install it.");
-      // console.log("Hi");
-      // const provider1 = await detectEthereumProvider();
-      // if (!provider1) {
-      //   throw new Error("MetaMask provider not found.");
-      // }
-
-      const demo = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("demo: ", demo);
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      ethers.utils.getAddress(addr);
-      const tx = await signer?.sendTransaction({
-        to: addr,
-        value: ethers.utils.parseEther(ether),
-      });
-      console.log({ ether, addr });
-      // console.log("tx", tx);
-      // setTxs([tx]);
-    } catch (err) {
-      console.log("something went wrong");
-    }
-  };
 
   const [error, setError] = useState();
   const [txs, setTxs] = useState([]);
@@ -203,14 +198,16 @@ const PaymentFirst = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
-
     setError();
-    await startPayment({
+    const success = await startPayment({
       setError,
       setTxs,
       ether: data.get("ether"),
       addr: data.get("addr"),
     });
+    if (success) {
+      console.log("Transaction successful");
+    } else console.log("Transaction Failed");
   };
 
   return (
@@ -358,6 +355,7 @@ const PaymentFirst = ({
                   >
                     Pay now
                   </button>
+                  <ErrorMessage message={error} />
                 </footer>
               </div>
             </form>
